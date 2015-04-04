@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 #coding: utf-8
+AmatFile = "Amatrix.csv"
+FvecFile = "Fvector.csv"
+
 """
     __     _             _        _
     Python Interindustry Relation Analysis
