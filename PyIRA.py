@@ -49,7 +49,6 @@ if __name__ == "__main__":
     amatData = csv.reader(open('Amatrix14.csv','rb'))
     i = 0
     for row in amatData:
-        #print "line Num = %02d" % count
         j = 0
         for data in row:
            A[i,j] = float(data)
