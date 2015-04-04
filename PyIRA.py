@@ -43,7 +43,7 @@ if __name__ == "__main__":
             if(i==j):
                 I[i,j] = 1.
 #投入係数表の読み込み
-    amatData = csv.reader(open('Amatrix.csv','rb'))
+    amatData = csv.reader(open('Amatrix14.csv','rb'))
     i = 0
     for row in amatData:
         #print "line Num = %02d" % count
@@ -53,7 +53,7 @@ if __name__ == "__main__":
            j += 1
         i += 1
 #最終需要ベクトルの読み込み（16個ある)
-    fvecData = csv.reader(open('Fvector.csv','rb'))
+    fvecData = csv.reader(open('Fvector14.csv','rb'))
     i = 0
     for row in fvecData:
         f1[i] = float(row[0])
@@ -83,4 +83,4 @@ if __name__ == "__main__":
 
     print X2-X1
 # 入力を求める（PyScripterではshift_jisでエラーが出る）
-# print raw_input(u"何か入力してください".encode("shift_jis"))
+    print raw_input(u"解析終了．出力ファイルを確認して下さい．".encode("shift_jis"))
