@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 #coding: utf-8
-AmatFile = "Amatrix.csv"
-FvecFile = "Fvector.csv"
-
+AmatFile = "Amatrix14.csv"
+FvecFile = "Fvector14.csv"
+SectionFile = "Section14.txt"
+n = 14              #マトリクスサイズ(部門数)
 """
     __     _             _        _
     Python Interindustry Relation Analysis
 """
 import numpy as np
 import scipy as sp
+import matplotlib
 import csv
 import time
 
@@ -18,7 +20,6 @@ if __name__ == "__main__":
     print u"$*********************************$"
 
 #numpy配列を作成
-    n = 14              #マトリクスサイズ(部門数)
     A = np.zeros((n,n)) #投入係数
     I = np.zeros((n,n)) #単位行列
     f1 = np.zeros(n)    #家計外消費支出
@@ -39,14 +40,14 @@ if __name__ == "__main__":
     f16= np.zeros(n)    #最終需要部門計
     X  = np.zeros(n)    #解ベクトル
 
-    time.sleep(2)
+    time.sleep(0.5)
 #対角要素を1にする
     for i in range(14):
         for j in range(14):
             if(i==j):
                 I[i,j] = 1.
 #投入係数表の読み込み
-    amatData = csv.reader(open('Amatrix14.csv','rb'))
+    amatData = csv.reader(open(AmatFile,'rb'))
     i = 0
     for row in amatData:
         j = 0
@@ -54,8 +55,18 @@ if __name__ == "__main__":
            A[i,j] = float(data)
            j += 1
         i += 1
+
+#部門名をテキストから読み込み
+    temp = open(SectionFile,'rb')
+    secName = []
+    for row in range(n):
+        line = temp.readline()
+        line = line.rstrip("\n")
+        secName.append(line)
+
+
 #最終需要ベクトルの読み込み（16個ある)
-    fvecData = csv.reader(open('Fvector14.csv','rb'))
+    fvecData = csv.reader(open(FvecFile,'rb'))
     i = 0
     for row in fvecData:
         f1[i] = float(row[0])
@@ -78,11 +89,26 @@ if __name__ == "__main__":
 
 #([I]-[A])X=F
     X1 = np.linalg.solve(I-A,f16)
-    print X1
+    print u"部門名                      生産額"
+    print u"----------------------------------------"
+    for i in range(n):
+        print "%-10s : %10.0f%s"%(secName[i].decode("utf-8"),X1[i]," JPY")
+    print u"----------------------------------------"
+    print
     f16[8] = f16[8] * 0.9
     X2 = np.linalg.solve(I-A,f16)
-    print X2
+    print u"部門名                      生産額"
+    print u"----------------------------------------"
+    for i in range(n):
+        print "%-10s : %10.0f%s"%(secName[i].decode("utf-8"),X2[i]," JPY")
+    print u"----------------------------------------"
+    print
+    print u"部門名                      生産額"
+    print u"----------------------------------------"
+    for i in range(n):
+        print "%-10s : %10.5f%s"%(secName[i].decode("utf-8"),(X2[i]-X1[i])/X1[i]," JPY")
+    print u"----------------------------------------"
+    print
 
-    print X2-X1
 # 入力を求める（PyScripterではshift_jisでエラーが出る）
     print raw_input(u"解析終了．出力ファイルを確認して下さい．".encode("shift_jis"))
